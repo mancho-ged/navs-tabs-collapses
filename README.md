@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Playing in React with Navs, Tabs and Collapses
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
