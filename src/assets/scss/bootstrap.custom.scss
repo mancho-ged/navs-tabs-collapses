@@ -1,0 +1,5 @@
+// Override default variables before the import
+$primary: #1a73e8;
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
