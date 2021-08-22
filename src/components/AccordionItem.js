@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-const AccordionItem = ({ title, content, id, updateURL, activeIds }) => {
+const AccordionItem = ({ title, content, id, updateURL, activeIds, queryId }) => {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    // Update the document title using the browser API
+    // Update active element
     if (activeIds.indexOf(id) !== -1) {
       setIsActive(true);
     } else {
       setIsActive(false);
     }
-  }, [activeIds, id]);
+  }, [activeIds, id,]);
 
   return (
     <div className="accordion-item">
@@ -18,7 +18,7 @@ const AccordionItem = ({ title, content, id, updateURL, activeIds }) => {
         className="accordion-header"
         onClick={() => {
           setIsActive(!isActive);
-          updateURL(id);
+          updateURL(queryId, id);
         }}
       >
         <button className={`accordion-button ${!isActive && "collapsed"}`}>

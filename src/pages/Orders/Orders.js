@@ -1,28 +1,58 @@
-import React from "react";
-import { Switch, Route, NavLink, useRouteMatch } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import {
+  Switch,
+  Route,
+  NavLink,
+  useRouteMatch,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import routeConstants from "shared/constants/routes";
 import General from "./pages/General/General";
-
-import RouteWithSubRoutes from "shared/components/RouteWithSubRoutes";
+import { AccordionsContext } from "pages/App/App";
 import Addresses from "./pages/Addresses/Addresses";
 import OrdersSub from "./pages/Orders/Orders";
 const { ORDERS } = routeConstants;
 const { GENERAL } = ORDERS.subroutes;
 const { ADDRESSES } = ORDERS.subroutes;
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Orders = ({ routes }) => {
   let match = useRouteMatch();
-  console.log(routes);
+
+  const { accordionValue, updateTabURL } =
+    useContext(AccordionsContext);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    history.push({ search: accordionValue });
+  }, [accordionValue, history]);
+
+  let query = useQuery();
+
+  // const [activeTab, setActiveTab] = useState(
+  //   query.get("b") ? query.get("b") : null
+  // );
+  let activeTab = query.get("tabs1") ? query.get("tabs1") : null
+  useEffect(() => {
+    // setActiveTab(query.get("tabs1"));
+  }, [query, history]);
 
   return (
     <div className="w-100">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <ul className="navbar-nav mr-auto">
-          <li>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light px-2">
+        <ul className="nav nav-tabs w-100">
+          <li className="nav-item">
             <NavLink
               to={`${match.url}/general`}
               activeClassName="active"
               className="nav-link"
+              onClick={() => updateTabURL("tabs1", "general")}
             >
               {GENERAL.name}
             </NavLink>
@@ -32,6 +62,7 @@ const Orders = ({ routes }) => {
               to={`${match.url}/addresses`}
               activeClassName="active"
               className="nav-link"
+              onClick={() => updateTabURL("tabs1", "addresses")}
             >
               {ADDRESSES.name}
             </NavLink>
@@ -41,6 +72,7 @@ const Orders = ({ routes }) => {
               to={`${match.url}/orders`}
               activeClassName="active"
               className="nav-link"
+              onClick={() => updateTabURL("tabs1", "orders")}
             >
               {ORDERS.name}
             </NavLink>
@@ -64,9 +96,17 @@ const Orders = ({ routes }) => {
           <Route path={`${match.path}/orders`}>
             <OrdersSub />
           </Route>
-          <Route exact path={match.path}>
-            <General />
-          </Route>
+          <Route
+            path={match.path}
+            render={() => {
+              let redirectPath = `${match.path}/${activeTab}`
+              return activeTab ? (
+                <Redirect to={`${redirectPath}`} />
+              ) : (
+                <General />
+              );
+            }}
+          />
         </Switch>
       </div>
     </div>

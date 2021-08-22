@@ -11,7 +11,7 @@ function useQuery() {
 }
 
 const Accordion = ({queryId, accordionData}) => {
-  const {accordionValue, setAccordionValue} = useContext(AccordionsContext)
+  const {accordionValue, updateURL} = useContext(AccordionsContext)
 
   const history = useHistory();
   let query = useQuery();
@@ -19,22 +19,7 @@ const Accordion = ({queryId, accordionData}) => {
     history.push({ search: accordionValue });
   }, [accordionValue, history]);
   
-  const updateURL = (id) => { 
-    let tempQuery = query.get(queryId)?query.get(queryId).split(" "):[] 
-        
-    if(tempQuery.indexOf(id) !== -1){
-      const idx = tempQuery.indexOf(id) 
-      console.log("index:", idx)       
-      tempQuery.splice(idx, 1);      
-    } else {
-      console.log(tempQuery)
-      tempQuery.push(id);
-    }
-    query.delete(queryId);
-    query.append(queryId, tempQuery.join(" "));
-    history.push({ search: query.toString() });
-    setAccordionValue(query.toString())
-  }
+  
   const activeIds = query.get(queryId)?query.get(queryId).split(" "):[]; 
   
   return (
@@ -47,7 +32,8 @@ const Accordion = ({queryId, accordionData}) => {
             content, 
             id, 
             updateURL,
-            activeIds
+            activeIds,
+            queryId
           }
           return <AccordionItem {...accItemProps} key={id}  />
         })}

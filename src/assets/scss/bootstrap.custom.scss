@@ -1,5 +1,14 @@
 // Override default variables before the import
-$primary: #1a73e8;
+$blue:    #007bff;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$red:     #ff7851;
+$orange:  #fd7e14;
+$yellow:  #ffce67;
+$green:   #56cc9d;
+$teal:    #20c997;
+$cyan:    #6cc3d5;
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
